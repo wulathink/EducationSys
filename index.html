@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>Tornado Websocket</title>
+</head>
+
+<script type="text/javascript">
+	var ws;
+	function onLoad(){
+		ws = new WebSocket("ws://localhost:8080/ws");
+		ws.onmessage = function(e){
+			alert(e.data)
+		}
+	}
+
+	function sendMsg(){
+		ws.send(document.getElementById('msg').value);
+	}
+
+
+	var xmlHttp;
+	function ajax_request(){
+		xmlHttp = new XMLHttpRequest();
+		if(null == xmlHttp){
+			alert("null == xmlHttp");
+		}
+		xmlHttp.onreadystatechange = callback;
+		xmlHttp.open("POST", "http://127.0.0.1:8080/register", false);
+		xmlHttp.setRequestHeader("Content-Type","application/json");
+		var json_data = '{"username":"michael","password":"123456","userNo":"10002","phone":"18583680490"}';
+		xmlHttp.send(json_data);
+	}
+
+	function callback(){
+		if(xmlHttp.readyState == 4){
+			alert(xmlHttp.status);
+			if(200 == xmlHttp.status){
+				alert("Requst Success");
+			}else{
+				alert("200 != xmlHttp.status");
+			}
+		}else{
+		}
+	}
+</script>
+
+<body onload='onLoad();'>
+	Message to send: <input type="text" id="msg" />
+	<input type="button" onclick="sendMsg();" value="send_to_server" />
+	<br/>
+	<input type="button" onclick="ajax_request();" value="ajax_json_request" />
+</body>
+</html>
